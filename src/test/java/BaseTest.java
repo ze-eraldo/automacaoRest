@@ -1,5 +1,6 @@
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
@@ -10,10 +11,11 @@ import static io.restassured.RestAssured.given;
 public class BaseTest {
     private RequestSpecification request;
 
+
     @BeforeTest
     public void beforeTest(){
         RestAssured.baseURI = "http://localhost:3000/";
-        request = given();
+
     }
     public Response carregaListaViculos(){
         RequestSpecification httpRequest = RestAssured.given();
@@ -21,53 +23,56 @@ public class BaseTest {
         return response;
     }
     public Response carregaUmVeiculo(String placa){
-        RequestSpecification httpRequest = RestAssured.given();
-        Response response = httpRequest.get("veiculos?placa="+placa);
-        return response;
-    }
-    public void insereUmVeiculo(JSONObject veiculo){
-        given()
-                .relaxedHTTPSValidation()
-                .header("Content-Type","application/json")
-                .body(veiculo)
-                .post("/veiculos/")
+        RequestSpecification requestSpecification;
+        requestSpecification = RestAssured.given();
+        Response response = requestSpecification
+                .contentType(ContentType.JSON)
+                .when()
+                .get("veiculos/"+placa)
                 .then()
                 .extract().response();
+        return response;
     }
-    public Response editaUmVeiculo(JSONObject carro){
-        Response response = given()
-                .relaxedHTTPSValidation()
-                .header("Content-Type","application/json")
-                .body(carro)
-                .put("/veiculos/")
+    public Response insereUmVeiculo(JSONObject veiculo){
+        RequestSpecification requestSpecification;
+        requestSpecification = RestAssured.given();
+        Response response = requestSpecification
+                .contentType(ContentType.JSON)
+                .when()
+                .body(veiculo.toString())
+                .post("veiculos/")
+                .then()
+                .extract().response();
+        return response;
+
+    }
+    public Response editaUmVeiculo(JSONObject carro, String placa){
+        RequestSpecification requestSpecification;
+        requestSpecification = RestAssured.given();
+        Response response = requestSpecification
+                .contentType(ContentType.JSON)
+                //.param("licensePlate",placa)
+                .when()
+                .body(carro.toString())
+                .put("veiculos/"+placa)
                 .then()
                 .extract().response();
         return response;
 
     }
     public Response insereManutencao(JSONObject manutencao){
-        Response response = given()
-                .relaxedHTTPSValidation()
-                .header("Content-Type","application/json")
-                .body(manutencao)
-                .post("/revisao")
+        RequestSpecification requestSpecification;
+        requestSpecification = RestAssured.given();
+        Response response = requestSpecification
+                .contentType(ContentType.JSON)
+                .when()
+                .body(manutencao.toString())
+                .post("revisao/")
                 .then()
                 .extract().response();
         return response;
 
-    }
-    public Response editaManutencao(JSONObject manutencao){
-        Response response = given()
-                .relaxedHTTPSValidation()
-                .header("Content-Type","application/json")
-                .body(manutencao)
-                .put("/revisao")
-                .then()
-                .extract().response();
-        return response;
 
     }
-
-
 
 }
