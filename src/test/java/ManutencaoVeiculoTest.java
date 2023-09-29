@@ -5,30 +5,32 @@ import org.testng.annotations.Test;
 
 
 public class ManutencaoVeiculoTest extends BaseTest{
-     Response response;
+     private Response response;
+     private String placa = "ZZ7711";
     @Test
     public void inserirNovoVeiculo(){
         //dados que o usuario preencher no formulario
+
         JSONObject novoCarro = new JSONObject();
         novoCarro.put("name","Qadra");
-        novoCarro.put("licensePlate","AXC0101");
+        novoCarro.put("licensePlate",placa);
         novoCarro.put("model","Torton");
         novoCarro.put("brand","XdoVe");
         novoCarro.put("year",2077);
         novoCarro.put("category","Delivery");
         novoCarro.put("odometer", 1111);
-        System.out.println(novoCarro);
+        System.out.println("Request: "+novoCarro);
         //clique no botao add
          response=insereUmVeiculo(novoCarro);
         Assert.assertEquals(response.getStatusCode(),200);
-        Assert.assertTrue(response.jsonPath().getString("name").contains("Qadra"));
+        Assert.assertTrue(response.jsonPath().getString("licensePlate").contains(placa));
         System.out.println(response.body().prettyPrint());
     }
     @Test
     public void  registrarNovaManutencao(){
         //dados preenchidos no formulario
         JSONObject novaManutencao = new JSONObject();
-        novaManutencao.put("licensePlate","ABC1234");
+        novaManutencao.put("licensePlate",placa);
         novaManutencao.put("description","Oxigen");
         novaManutencao.put("date","01/01/2023");
         novaManutencao.put("value",1000);
@@ -37,12 +39,14 @@ public class ManutencaoVeiculoTest extends BaseTest{
 
         //clique no botao add
         response = insereManutencao(novaManutencao);
-        System.out.println(novaManutencao);
+        System.out.println("Request: "+novaManutencao);
         Assert.assertEquals(response.getStatusCode(),200);
+        System.out.println(response.body().prettyPrint());
+
     }
     @Test
     public void registrarNovoValorOdometro(){
-        String placa = "ABC1234";
+
         response = carregaUmVeiculo(placa);
         //usuario seleciona o carro e edita
         JSONObject novoOdometro = new JSONObject();
@@ -54,9 +58,10 @@ public class ManutencaoVeiculoTest extends BaseTest{
         novoOdometro.put("category",response.jsonPath().getString("category"));
         novoOdometro.put("odometer", 8122);
         //clica em edit
-        System.out.println(novoOdometro);
+        System.out.println("Request: "+novoOdometro);
         response = editaUmVeiculo(novoOdometro);
         Assert.assertEquals(response.getStatusCode(),200);
+        System.out.println(response.body().prettyPrint());
     }
     @Test
     public void carregarListaCompletaVeiculos(){
@@ -64,25 +69,27 @@ public class ManutencaoVeiculoTest extends BaseTest{
         Assert.assertEquals(response.getStatusCode(),200);
         // a lista exibida ao usuário é maior do que zero?
         Assert.assertNotEquals(response.body().jsonPath().getList("").size(),0);
-        System.out.println(response.body().jsonPath().getList("").size());
+        System.out.println("Quantidade de veiculos: "+response.body().jsonPath().getList("").size());
+        System.out.println(response.body().prettyPrint());
     }
     @Test
     public void editarDadosCarro(){
-        String placa = "ABC1234";
+
         response = carregaUmVeiculo(placa);
         JSONObject carro = new JSONObject();
 
         carro.put("name",response.jsonPath().getString("name"));
         carro.put("licensePlate",response.jsonPath().getString("licensePlate"));
-        carro.put("model","Runark");
-        carro.put("brand","Strom");
+        carro.put("model","Runark teste");
+        carro.put("brand","Strom teste");
         carro.put("year",response.jsonPath().getString("year"));
         carro.put("category",response.jsonPath().getString("category"));
         carro.put("odometer", response.jsonPath().getString("odometer"));
 
-        System.out.println(carro);
+        System.out.println("Request: "+carro);
         response = editaUmVeiculo(carro);
         Assert.assertEquals(response.getStatusCode(),200);
+        System.out.println(response.body().prettyPrint());
 
     }
 

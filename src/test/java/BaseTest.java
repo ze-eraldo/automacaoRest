@@ -27,6 +27,7 @@ public class BaseTest {
         requestSpecification = RestAssured.given();
         Response response = requestSpecification
                 .contentType(ContentType.JSON)
+                .headers("Content-Type","application/json")
                 .when()
                 .get("vehicles/"+placa)
                 .then()
@@ -38,6 +39,7 @@ public class BaseTest {
         requestSpecification = RestAssured.given();
         Response response = requestSpecification
                 .contentType(ContentType.JSON)
+                //.headers("Content-Type","application/json")
                 .when()
                 .body(veiculo.toString())
                 .post("vehicles/")
