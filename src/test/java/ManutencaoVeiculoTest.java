@@ -11,8 +11,8 @@ public class ManutencaoVeiculoTest extends BaseTest{
         //dados que o usuario preencher no formulario
         JSONObject novoCarro = new JSONObject();
         novoCarro.put("name","Qadra");
-        novoCarro.put("licensePlate","AXC199");
-        novoCarro.put("model","TortoN");
+        novoCarro.put("licensePlate","AXC0101");
+        novoCarro.put("model","Torton");
         novoCarro.put("brand","XdoVe");
         novoCarro.put("year",2077);
         novoCarro.put("category","Delivery");
@@ -20,7 +20,7 @@ public class ManutencaoVeiculoTest extends BaseTest{
         System.out.println(novoCarro);
         //clique no botao add
          response=insereUmVeiculo(novoCarro);
-        Assert.assertEquals(response.getStatusCode(),201);
+        Assert.assertEquals(response.getStatusCode(),200);
         Assert.assertTrue(response.jsonPath().getString("name").contains("Qadra"));
         System.out.println(response.body().prettyPrint());
     }
@@ -28,8 +28,8 @@ public class ManutencaoVeiculoTest extends BaseTest{
     public void  registrarNovaManutencao(){
         //dados preenchidos no formulario
         JSONObject novaManutencao = new JSONObject();
-        novaManutencao.put("licensePlate","ABC-123");
-        novaManutencao.put("description","real life only to my space");
+        novaManutencao.put("licensePlate","ABC1234");
+        novaManutencao.put("description","Oxigen");
         novaManutencao.put("date","01/01/2023");
         novaManutencao.put("value",1000);
         novaManutencao.put("referenceOdometer",10);
@@ -38,11 +38,11 @@ public class ManutencaoVeiculoTest extends BaseTest{
         //clique no botao add
         response = insereManutencao(novaManutencao);
         System.out.println(novaManutencao);
-        Assert.assertEquals(response.getStatusCode(),201);
+        Assert.assertEquals(response.getStatusCode(),200);
     }
     @Test
     public void registrarNovoValorOdometro(){
-        String placa = "ABC-123";
+        String placa = "ABC1234";
         response = carregaUmVeiculo(placa);
         //usuario seleciona o carro e edita
         JSONObject novoOdometro = new JSONObject();
@@ -52,10 +52,10 @@ public class ManutencaoVeiculoTest extends BaseTest{
         novoOdometro.put("brand",response.jsonPath().getString("brand"));
         novoOdometro.put("year",response.jsonPath().getString("year"));
         novoOdometro.put("category",response.jsonPath().getString("category"));
-        novoOdometro.put("odometer", 77077);
+        novoOdometro.put("odometer", 8122);
         //clica em edit
         System.out.println(novoOdometro);
-        response = editaUmVeiculo(novoOdometro,placa);
+        response = editaUmVeiculo(novoOdometro);
         Assert.assertEquals(response.getStatusCode(),200);
     }
     @Test
@@ -68,21 +68,20 @@ public class ManutencaoVeiculoTest extends BaseTest{
     }
     @Test
     public void editarDadosCarro(){
-        String placa = "ABC-123";
+        String placa = "ABC1234";
         response = carregaUmVeiculo(placa);
         JSONObject carro = new JSONObject();
-        System.out.println(response.prettyPrint());
 
         carro.put("name",response.jsonPath().getString("name"));
         carro.put("licensePlate",response.jsonPath().getString("licensePlate"));
-        carro.put("model","READ here");
-        carro.put("brand","COM");
+        carro.put("model","Runark");
+        carro.put("brand","Strom");
         carro.put("year",response.jsonPath().getString("year"));
         carro.put("category",response.jsonPath().getString("category"));
         carro.put("odometer", response.jsonPath().getString("odometer"));
 
         System.out.println(carro);
-        response = editaUmVeiculo(carro,placa);
+        response = editaUmVeiculo(carro);
         Assert.assertEquals(response.getStatusCode(),200);
 
     }

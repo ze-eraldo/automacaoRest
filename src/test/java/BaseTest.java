@@ -19,7 +19,7 @@ public class BaseTest {
     }
     public Response carregaListaViculos(){
         RequestSpecification httpRequest = RestAssured.given();
-        Response response = httpRequest.get("veiculos/");
+        Response response = httpRequest.get("vehicles/");
         return response;
     }
     public Response carregaUmVeiculo(String placa){
@@ -28,7 +28,7 @@ public class BaseTest {
         Response response = requestSpecification
                 .contentType(ContentType.JSON)
                 .when()
-                .get("veiculos/"+placa)
+                .get("vehicles/"+placa)
                 .then()
                 .extract().response();
         return response;
@@ -40,21 +40,20 @@ public class BaseTest {
                 .contentType(ContentType.JSON)
                 .when()
                 .body(veiculo.toString())
-                .post("veiculos/")
+                .post("vehicles/")
                 .then()
                 .extract().response();
         return response;
 
     }
-    public Response editaUmVeiculo(JSONObject carro, String placa){
+    public Response editaUmVeiculo(JSONObject carro){
         RequestSpecification requestSpecification;
         requestSpecification = RestAssured.given();
         Response response = requestSpecification
                 .contentType(ContentType.JSON)
-                //.param("licensePlate",placa)
                 .when()
                 .body(carro.toString())
-                .put("veiculos/"+placa)
+                .put("vehicles/")
                 .then()
                 .extract().response();
         return response;
@@ -67,7 +66,7 @@ public class BaseTest {
                 .contentType(ContentType.JSON)
                 .when()
                 .body(manutencao.toString())
-                .post("revisao/")
+                .post("maintenances/")
                 .then()
                 .extract().response();
         return response;
