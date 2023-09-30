@@ -6,11 +6,10 @@ import org.testng.annotations.Test;
 
 public class ManutencaoVeiculoTest extends BaseTest{
      private Response response;
-     private String placa = "ZZ7711";
+     private String placa = "TSRee11";
     @Test
     public void inserirNovoVeiculo(){
         //dados que o usuario preencher no formulario
-
         JSONObject novoCarro = new JSONObject();
         novoCarro.put("name","Qadra");
         novoCarro.put("licensePlate",placa);
